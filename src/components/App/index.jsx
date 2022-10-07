@@ -43,9 +43,9 @@ export class App extends Component {
   addContactToLocalStorage = contact => {
     let savedContacts = localStorage.getItem(CONTACTS);
     savedContacts = savedContacts ? JSON.parse(savedContacts) : [];
-    console.log('savedContacts: ', savedContacts);
+
     savedContacts.push(contact);
-    console.log('after savedContacts: ', savedContacts);
+
     localStorage.setItem(CONTACTS, JSON.stringify(savedContacts));
   };
 
