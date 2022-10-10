@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
 
-import { ContactItem } from 'components/ContactItem';
+import { ContactItem } from 'components/ContactItem/ContactItem';
 
-import { ContactFilter } from 'components/ContactFilter';
+import { ContactFilter } from 'components/ContactFilter/ContactFilter';
 
-export class ContactList extends Component {
+export class ContactsList extends Component {
   static defaultProps = {
     contacts: [],
   };

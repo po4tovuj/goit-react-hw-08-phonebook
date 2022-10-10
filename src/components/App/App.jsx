@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Section } from 'components/Section';
-import { ContactList } from 'components/ContactsList';
+import { Section } from 'components/Section/Section';
+import { ContactsList } from 'components/ContactsList/ContactsList';
 import { Container } from './App.styled';
-import { ContactForm } from 'components/ContactForm';
+import { ContactForm } from 'components/ContactForm/ContactForm';
 import shortid from 'shortid';
 const INITIAL_STATE = {
   contacts: [],
@@ -59,7 +59,7 @@ export class App extends Component {
           <ContactForm onSubmit={this.onSubmit} />
         </Section>
         <Section title="Contact List">
-          <ContactList
+          <ContactsList
             contacts={this.state.contacts}
             handleDelete={this.handleDelete}
           />
