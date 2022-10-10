@@ -16,9 +16,9 @@ export class App extends Component {
     const updatedContacts = this.state.contacts.filter(
       contact => contact.id !== id
     );
-    this.setState(state => ({
+    this.setState({
       contacts: updatedContacts,
-    }));
+    });
     localStorage.setItem(CONTACTS, JSON.stringify(updatedContacts));
   };
   onSubmit = contact => {
