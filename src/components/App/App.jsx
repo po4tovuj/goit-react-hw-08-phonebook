@@ -1,25 +1,33 @@
 import React, { Component } from 'react';
+import shortid from 'shortid';
+
 import { Section } from 'components/Section/Section';
 import { ContactsList } from 'components/ContactsList/ContactsList';
 import { Container } from './App.styled';
 import { ContactForm } from 'components/ContactForm/ContactForm';
-import shortid from 'shortid';
+import { ContactFilter } from 'components/ContactFilter/ContactFilter';
+
 const INITIAL_STATE = {
   contacts: [],
+  filterQuery: '',
 };
 const CONTACTS = 'CONTACTS';
 export class App extends Component {
   state = {
     ...INITIAL_STATE,
   };
+  componentDidMount() {
+    this.setState({ contacts: this.getContactFromStorage() });
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      this.updateContactsInLocalStorage();
+    }
+  }
   handleDelete = id => {
-    const updatedContacts = this.state.contacts.filter(
-      contact => contact.id !== id
-    );
-    this.setState({
-      contacts: updatedContacts,
-    });
-    localStorage.setItem(CONTACTS, JSON.stringify(updatedContacts));
+    this.setState(({ contacts }) => ({
+      contacts: contacts.filter(contact => contact.id !== id),
+    }));
   };
   onSubmit = contact => {
     const isAlreadyExist = this.state.contacts.find(
@@ -28,11 +36,12 @@ export class App extends Component {
     if (isAlreadyExist) {
       throw new Error(`${contact.name} is already in contacts`);
     }
-    const newContact = { ...contact, id: shortid.generate() };
-    this.addContactToLocalStorage(newContact);
     this.setState(prevState => {
       return {
-        contacts: [...prevState.contacts, newContact],
+        contacts: [
+          ...prevState.contacts,
+          { ...contact, id: shortid.generate() },
+        ],
       };
     });
   };
@@ -40,27 +49,37 @@ export class App extends Component {
     const contacts = localStorage.getItem(CONTACTS);
     return contacts ? JSON.parse(contacts) : [];
   };
-  addContactToLocalStorage = contact => {
-    let savedContacts = localStorage.getItem(CONTACTS);
-    savedContacts = savedContacts ? JSON.parse(savedContacts) : [];
+  updateContactsInLocalStorage() {
+    localStorage.setItem(CONTACTS, JSON.stringify(this.state.contacts));
+  }
 
-    savedContacts.push(contact);
+  onFilterChange = e => {
+    const { value } = e.target;
 
-    localStorage.setItem(CONTACTS, JSON.stringify(savedContacts));
+    this.setState({ filterQuery: value });
+  };
+  filterContacts = () => {
+    const normalizeFilter = this.state.filterQuery.toLowerCase();
+    return this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizeFilter)
+    );
   };
 
-  componentDidMount() {
-    this.setState({ contacts: this.getContactFromStorage() });
-  }
   render() {
+    const filteredContacts = this.filterContacts();
+
     return (
       <Container>
         <Section title="PhoneBook">
           <ContactForm onSubmit={this.onSubmit} />
         </Section>
         <Section title="Contact List">
+          <ContactFilter
+            onFilterChange={this.onFilterChange}
+            filterQuery={this.state.filter}
+          />
           <ContactsList
-            contacts={this.state.contacts}
+            contacts={filteredContacts}
             handleDelete={this.handleDelete}
           />
         </Section>

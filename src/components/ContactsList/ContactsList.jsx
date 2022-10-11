@@ -3,8 +3,6 @@ import { Component } from 'react';
 
 import { ContactItem } from 'components/ContactItem/ContactItem';
 
-import { ContactFilter } from 'components/ContactFilter/ContactFilter';
-
 export class ContactsList extends Component {
   static defaultProps = {
     contacts: [],
@@ -17,41 +15,24 @@ export class ContactsList extends Component {
     ),
   };
   state = { filter: '' };
-  onFilterChange = e => {
-    const { value } = e.target;
 
-    this.setState({ filter: value });
-  };
-  filterContacts = () => {
-    const normalizeFilter = this.state.filter.toLowerCase();
-    return this.props.contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizeFilter)
-    );
-  };
   render() {
-    const { handleDelete } = this.props;
-    const filteredContacts = this.filterContacts();
+    const { handleDelete, contacts } = this.props;
 
     return (
-      <>
-        <ContactFilter
-          onFilterChange={this.onFilterChange}
-          filterQuery={this.filter}
-        />
-        <ul>
-          {filteredContacts.map(({ id, name, number }) => {
-            return (
-              <ContactItem
-                key={id}
-                id={id}
-                name={name}
-                number={number}
-                handleDelete={handleDelete}
-              />
-            );
-          })}
-        </ul>
-      </>
+      <ul>
+        {contacts.map(({ id, name, number }) => {
+          return (
+            <ContactItem
+              key={id}
+              id={id}
+              name={name}
+              number={number}
+              handleDelete={handleDelete}
+            />
+          );
+        })}
+      </ul>
     );
   }
 }
