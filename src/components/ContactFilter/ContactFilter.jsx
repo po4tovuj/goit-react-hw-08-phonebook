@@ -8,7 +8,7 @@ export const ContactFilter = ({ filterQuery, onFilterChange }) => {
         id="filterInput"
         type="text"
         value={filterQuery}
-        onChange={onFilterChange}
+        onChange={e => onFilterChange(e.target.value)}
       />
     </Label>
   );
