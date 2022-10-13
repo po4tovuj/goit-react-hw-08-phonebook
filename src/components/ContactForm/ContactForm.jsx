@@ -27,7 +27,7 @@ export const ContactForm = ({ onSubmit }) => {
   return (
     <Formik
       initialValues={{ name: '', number: '' }}
-      validateOnBlur
+      validateOnBlur={false}
       validateOnChange={false}
       onSubmit={(values, { resetForm }) => {
         try {

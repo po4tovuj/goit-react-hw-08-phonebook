@@ -13,7 +13,7 @@ export const App = () => {
   const [contacts, setContacts] = useState(
     JSON.parse(localStorage.getItem(CONTACTS)) || []
   );
-  const [filteredContacts, setFilterContacts] = useState([]);
+  // const [filteredContacts, setFilterContacts] = useState([]);
   const [filterQuery, setFilterQuery] = useState('');
 
   const handleDelete = id => {
@@ -21,18 +21,16 @@ export const App = () => {
   };
 
   useEffect(() => {
-    console.log('contacts: ', contacts);
     localStorage.setItem(CONTACTS, JSON.stringify(contacts));
   }, [contacts]);
 
-  useEffect(() => {
+  const filteredContacts = () => {
     const normalizeFilter = filterQuery.toLowerCase();
     const filtered = contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizeFilter)
     );
-    setFilterContacts(filtered);
-  }, [filterQuery, contacts, setFilterContacts]);
-
+    return filtered;
+  };
   const onFilterChange = query => {
     setFilterQuery(query);
   };
@@ -57,7 +55,10 @@ export const App = () => {
           onFilterChange={onFilterChange}
           filterQuery={filterQuery}
         />
-        <ContactsList contacts={filteredContacts} handleDelete={handleDelete} />
+        <ContactsList
+          contacts={filteredContacts()}
+          handleDelete={handleDelete}
+        />
       </Section>
     </Container>
   );
