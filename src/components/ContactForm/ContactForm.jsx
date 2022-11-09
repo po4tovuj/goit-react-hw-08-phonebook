@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
-
+import shortid from 'shortid';
+import { useSelector, useDispatch } from 'react-redux';
 import { FormInput, Error } from './ContactForm.styled';
 import { Button, Label } from 'components/CommonStyledComponents';
+import { getContacts } from 'redux/selectors';
+import { addContact } from 'redux/actions';
 
 export const ContactForm = ({ onSubmit }) => {
   const validationSchema = yup.object().shape({
@@ -24,18 +27,28 @@ export const ContactForm = ({ onSubmit }) => {
       )
       .required('Phone is required!'),
   });
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
+
   return (
     <Formik
       initialValues={{ name: '', number: '' }}
       validateOnBlur={false}
       validateOnChange={false}
       onSubmit={(values, { resetForm }) => {
-        try {
-          onSubmit(values);
-          resetForm();
-        } catch (error) {
-          alert(error.message || error);
+        const name = values.name.toLowerCase();
+
+        const isContactExist = contacts.find(contact => {
+          const normalizeContactName = contact.name.toLowerCase();
+          return normalizeContactName === name;
+        });
+        if (isContactExist) {
+          return alert(`Contact '${values.name}' is already in contacts`);
         }
+        dispatch(addContact({ ...values, id: shortid.generate() }));
+        resetForm();
+        // onSubmit(values);
+        // resetForm();
       }}
       validationSchema={validationSchema}
     >
