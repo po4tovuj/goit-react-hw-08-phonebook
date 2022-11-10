@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
-import shortid from 'shortid';
 import { useSelector, useDispatch } from 'react-redux';
 import { FormInput, Error } from './ContactForm.styled';
 import { Button, Label } from 'components/CommonStyledComponents';
 import { getContacts } from 'redux/selectors';
-import { addContact } from 'redux/actions';
+import { addContact } from 'redux/contactsSlice';
 
 export const ContactForm = ({ onSubmit }) => {
   const validationSchema = yup.object().shape({
@@ -45,10 +44,9 @@ export const ContactForm = ({ onSubmit }) => {
         if (isContactExist) {
           return alert(`Contact '${values.name}' is already in contacts`);
         }
-        dispatch(addContact({ ...values, id: shortid.generate() }));
+        dispatch(addContact(values));
         resetForm();
         // onSubmit(values);
-        // resetForm();
       }}
       validationSchema={validationSchema}
     >
