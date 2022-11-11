@@ -1,6 +1,4 @@
-// import React, { Component } from 'react';
-import { useState, useEffect } from 'react';
-import shortid from 'shortid';
+// import { useState } from 'react';
 
 import { Section } from 'components/Section/Section';
 import { ContactsList } from 'components/ContactsList/ContactsList';
@@ -8,57 +6,15 @@ import { Container } from './App.styled';
 import { ContactForm } from 'components/ContactForm/ContactForm';
 import { ContactFilter } from 'components/ContactFilter/ContactFilter';
 
-const CONTACTS = 'CONTACTS';
 export const App = () => {
-  const [contacts, setContacts] = useState(
-    JSON.parse(localStorage.getItem(CONTACTS)) || []
-  );
-  // const [filteredContacts, setFilterContacts] = useState([]);
-  const [filterQuery, setFilterQuery] = useState('');
-
-  const handleDelete = id => {
-    setContacts(contacts.filter(contact => contact.id !== id));
-  };
-
-  useEffect(() => {
-    localStorage.setItem(CONTACTS, JSON.stringify(contacts));
-  }, [contacts]);
-
-  const filteredContacts = () => {
-    const normalizeFilter = filterQuery.toLowerCase();
-    const filtered = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizeFilter)
-    );
-    return filtered;
-  };
-  const onFilterChange = query => {
-    setFilterQuery(query);
-  };
-  const addContact = contact => {
-    const isAlreadyExist = contacts.find(
-      ({ name }) => name.toLowerCase() === contact.name.toLowerCase()
-    );
-    if (isAlreadyExist) {
-      throw new Error(`${contact.name} is already in contacts`);
-    }
-    setContacts([{ ...contact, id: shortid.generate() }, ...contacts]);
-    //   localStorage.setItem(CONTACTS, JSON.stringify(contacts));
-  };
-
   return (
     <Container>
       <Section title="PhoneBook">
-        <ContactForm onSubmit={addContact} />
+        <ContactForm />
       </Section>
       <Section title="Contact List">
-        <ContactFilter
-          onFilterChange={onFilterChange}
-          filterQuery={filterQuery}
-        />
-        <ContactsList
-          contacts={filteredContacts()}
-          handleDelete={handleDelete}
-        />
+        <ContactFilter />
+        <ContactsList />
       </Section>
     </Container>
   );
