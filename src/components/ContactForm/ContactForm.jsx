@@ -6,7 +6,6 @@ import { FormInput, Error } from './ContactForm.styled';
 import { Button, Label } from 'components/CommonStyledComponents';
 import { getContacts } from 'redux/selectors';
 import { addContact } from 'redux/contactsSlice';
-import { CONTACTS } from 'redux/constants';
 
 export const ContactForm = ({ onSubmit }) => {
   const validationSchema = yup.object().shape({
