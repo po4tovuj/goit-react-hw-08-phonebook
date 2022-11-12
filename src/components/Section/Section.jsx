@@ -12,6 +12,7 @@ export const Section = ({ title = '', children }) => {
 Section.propTypes = {
   title: PropTypes.string,
   children: PropTypes.oneOfType([
+    PropTypes.node,
     PropTypes.element,
     PropTypes.arrayOf(PropTypes.element),
   ]),

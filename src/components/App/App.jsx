@@ -5,14 +5,28 @@ import { ContactsList } from 'components/ContactsList/ContactsList';
 import { Container } from './App.styled';
 import { ContactForm } from 'components/ContactForm/ContactForm';
 import { ContactFilter } from 'components/ContactFilter/ContactFilter';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchAll } from 'redux/operations';
+import { getIsLoading, getContactsError } from 'redux/selectors';
 
 export const App = () => {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(getIsLoading);
+  const error = useSelector(getContactsError);
+  useEffect(() => {
+    dispatch(fetchAll());
+  }, [dispatch]);
+
   return (
     <Container>
       <Section title="PhoneBook">
         <ContactForm />
       </Section>
+
       <Section title="Contact List">
+        {isLoading && !error && <b>Updating contacts...</b>}
+        {error && <b>Something bad happened... ${error}</b>}
         <ContactFilter />
         <ContactsList />
       </Section>

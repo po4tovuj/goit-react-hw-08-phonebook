@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FormInput, Error } from './ContactForm.styled';
 import { Button, Label } from 'components/CommonStyledComponents';
 import { getContacts } from 'redux/selectors';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from 'redux/operations';
 
 export const ContactForm = ({ onSubmit }) => {
   const validationSchema = yup.object().shape({
@@ -18,7 +18,7 @@ export const ContactForm = ({ onSubmit }) => {
       )
       .min(3, 'Too short!')
       .required('Name is required!'),
-    number: yup
+    phone: yup
       .string()
       .matches(
         /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
@@ -31,7 +31,7 @@ export const ContactForm = ({ onSubmit }) => {
 
   return (
     <Formik
-      initialValues={{ name: '', number: '' }}
+      initialValues={{ name: '', phone: '' }}
       validateOnBlur={false}
       validateOnChange={false}
       onSubmit={(values, { resetForm }) => {
@@ -76,11 +76,11 @@ export const ContactForm = ({ onSubmit }) => {
             Phone number
             <FormInput
               type={'tel'}
-              name={'number'}
+              name={'phone'}
               onChange={handleChange}
-              value={values.number}
+              value={values.phone}
             ></FormInput>
-            {touched.number && errors.number && <Error>{errors.number}</Error>}
+            {touched.phone && errors.phone && <Error>{errors.phone}</Error>}
           </Label>
           <Button type="submit" disabled={!dirty} onSubmit={handleSubmit}>
             Create Contact
