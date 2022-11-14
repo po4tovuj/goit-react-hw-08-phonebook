@@ -14,9 +14,9 @@ export const App = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(getIsLoading);
   const error = useSelector(getContactsError);
-  useEffect(() => {
-    dispatch(fetchAll());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchAll());
+  // }, [dispatch]);
 
   return (
     <Container>

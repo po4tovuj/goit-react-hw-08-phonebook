@@ -7,13 +7,13 @@ const contactsInitialState = {
   error: null,
 };
 
-const handlePending = state => {
+const handlePending = (state, action) => {
   state.isLoading = true;
 };
 
-const handleRejected = (state, { payload }) => {
+const handleRejected = (state, action) => {
   state.isLoading = false;
-  state.error = payload;
+  state.error = action.payload;
 };
 function isPendingAction(action) {
   return action.type.endsWith('/pending');
