@@ -2,10 +2,12 @@ import PropTypes from 'prop-types';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
-import { FormInput, Error } from './ContactForm.styled';
-import { Button, Label } from 'components/CommonStyledComponents';
+
 import { getContacts } from 'redux/selectors';
 import { addContact } from 'redux/operations';
+import { VStack, Button, Box } from '@chakra-ui/react';
+import TextField from 'components/Common/InputText';
+import { Notify } from 'notiflix';
 
 export const ContactForm = ({ onSubmit }) => {
   const validationSchema = yup.object().shape({
@@ -18,7 +20,7 @@ export const ContactForm = ({ onSubmit }) => {
       )
       .min(3, 'Too short!')
       .required('Name is required!'),
-    phone: yup
+    number: yup
       .string()
       .matches(
         /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
@@ -31,10 +33,10 @@ export const ContactForm = ({ onSubmit }) => {
 
   return (
     <Formik
-      initialValues={{ name: '', phone: '' }}
+      initialValues={{ name: '', number: '' }}
       validateOnBlur={false}
       validateOnChange={false}
-      onSubmit={(values, { resetForm }) => {
+      onSubmit={(values, { resetForm, setSubmitting }) => {
         const name = values.name.toLowerCase();
 
         const isContactExist = contacts.find(contact => {
@@ -44,48 +46,48 @@ export const ContactForm = ({ onSubmit }) => {
         if (isContactExist) {
           return alert(`Contact '${values.name}' is already in contacts`);
         }
-        dispatch(addContact(values));
-        resetForm();
+        try {
+          dispatch(addContact(values));
+          resetForm();
+        } catch (error) {
+          Notify.failure(`Contact wasn't created! ${error.message || ''}`);
+          setSubmitting(false);
+        }
         // onSubmit(values);
       }}
       validationSchema={validationSchema}
     >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        isValid,
-        handleSubmit,
-        handleBlur,
-        dirty,
-      }) => (
-        <Form>
-          <Label>
-            Contact Name
-            <FormInput
-              type={'text'}
-              name={'name'}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.name}
-            ></FormInput>
-          </Label>
-          {errors.name && <Error>{errors.name}</Error>}
-          <Label>
-            Phone number
-            <FormInput
-              type={'tel'}
-              name={'phone'}
-              onChange={handleChange}
-              value={values.phone}
-            ></FormInput>
-            {touched.phone && errors.phone && <Error>{errors.phone}</Error>}
-          </Label>
-          <Button type="submit" disabled={!dirty} onSubmit={handleSubmit}>
-            Create Contact
-          </Button>
-        </Form>
+      {({ isSubmiting, handleSubmit, handleBlur, dirty }) => (
+        <VStack
+          as="form"
+          // mx="auto"
+          py={5}
+          w={{ base: '90%', md: '300px' }}
+          justifyContent="center"
+          onSubmit={handleSubmit}
+        >
+          <TextField
+            label="Contact name"
+            name="name"
+            placeholder="Contact name"
+            type="text"
+            onBlur={handleBlur}
+            autoComplete="off"
+          ></TextField>
+          <TextField
+            label="Contact number"
+            name="number"
+            type="tel"
+            placeholder="Contact number"
+            onBlur={handleBlur}
+            autoComplete="off"
+          ></TextField>
+          <Box as="p" pt={4}>
+            <Button disabled={!dirty || isSubmiting} type="submit">
+              Create Contact
+            </Button>
+          </Box>
+        </VStack>
       )}
     </Formik>
   );

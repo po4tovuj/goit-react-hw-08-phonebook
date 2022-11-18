@@ -1,10 +1,10 @@
 import axios from './api';
 export const token = {
   set(token) {
-    axios.defaults.common.Authorization = `Bearer ${token}`;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   },
   unset() {
-    axios.defaults.common.Authorization = '';
+    axios.defaults.headers.common['Authorization'] = '';
   },
 };
 export const signUp = credentials => {

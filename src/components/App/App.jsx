@@ -1,5 +1,7 @@
 // import { useState } from 'react';
-
+import { lazy } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { SharedLayout } from '../SharedLayout/SharedLayout';
 import { Section } from 'components/Section/Section';
 import { ContactsList } from 'components/ContactsList/ContactsList';
 import { Container } from './App.styled';
@@ -9,28 +11,47 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchAll } from 'redux/operations';
 import { getIsLoading, getContactsError } from 'redux/selectors';
+import authOperations from 'redux/auth/auth-operations';
 
 export const App = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(getIsLoading);
   const error = useSelector(getContactsError);
-  // useEffect(() => {
-  //   dispatch(fetchAll());
-  // }, [dispatch]);
+  useEffect(() => {
+    const getUser = async () => {
+      const user = await dispatch(authOperations.fetchCurrentUser());
+      if (user) {
+        dispatch(fetchAll);
+      }
+    };
+    getUser();
+    // dispatch(fetchAll());
+  }, [dispatch]);
 
   return (
-    <Container>
-      <Section title="PhoneBook">
-        <ContactForm />
-      </Section>
+    <Routes>
+      <Route path="/" element={<SharedLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="/movies" element={<MoviesPage />}></Route>
+        <Route path="/movies/:movieId" element={<MovieDetailsPage />}>
+          <Route path="cast" element={<Cast />} />
+          <Route path="reviews" element={<Reviews />} />
+        </Route>
+      </Route>
+      <Route path="*" element={<NotFound> Page Not Found</NotFound>} />
+    </Routes>
 
-      <Section title="Contact List">
-        {isLoading && !error && <b>Updating contacts...</b>}
-        {error && <b>Something bad happened... ${error}</b>}
-        <ContactFilter />
-        <ContactsList />
-      </Section>
-    </Container>
+    // <Container maxW={'container.xl'} p={'20px'}>
+    //   <Section title="Contact List">
+    //     {isLoading && !error && <b>Updating contacts...</b>}
+    //     {error && <b>Something bad happened... ${error}</b>}
+    //     <ContactFilter />
+    //     <ContactsList />
+    //   </Section>
+    //   <Section title="PhoneBook">
+    //     <ContactForm />
+    //   </Section>
+    // </Container>
   );
 };
 // export class App extends Component {

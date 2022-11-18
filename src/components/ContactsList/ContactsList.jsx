@@ -8,8 +8,8 @@ export const ContactsList = () => {
 
   return (
     <ul>
-      {filteredContacts.map(({ id, name, phone }) => {
-        return <ContactItem key={id} id={id} name={name} phone={phone} />;
+      {filteredContacts.map(({ id, name, number }) => {
+        return <ContactItem key={id} id={id} name={name} number={number} />;
       })}
     </ul>
   );
