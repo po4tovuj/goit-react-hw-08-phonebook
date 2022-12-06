@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { Box, Button, Text, useBoolean, VStack } from '@chakra-ui/react';
 import TextField from 'components/Common/InputText';
 import { useDispatch } from 'react-redux';
-import authOperations from 'redux/auth/auth-operations';
+import authOperations from 'redux/auth/operations';
 import { useEffect, useRef } from 'react';
 
 export const SignUpModal = ({ callback }) => {
@@ -38,10 +38,6 @@ export const SignUpModal = ({ callback }) => {
       .string()
       .oneOf([yup.ref('password'), null], 'Passwords must match'),
   });
-  const handleSubmit = values => {
-    try {
-    } catch (error) {}
-  };
   return (
     <Formik
       initialValues={{

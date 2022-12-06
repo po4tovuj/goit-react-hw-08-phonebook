@@ -1,14 +1,22 @@
 // import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { Box, Button, Text, useBoolean, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Text,
+  Link,
+  useBoolean,
+  VStack,
+  Stack,
+} from '@chakra-ui/react';
 import TextField from 'components/Common/InputText';
 import { useDispatch } from 'react-redux';
-import authOperations from 'redux/auth/auth-operations';
 import { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { logIn } from 'redux/auth/operations';
 
-export const LoginModal = () => {
+const LoginPage = () => {
   const [isLoginFailed, setLoginFail] = useBoolean();
   const errorMessageTimeOut = useRef(null);
   const navigate = useNavigate();
@@ -40,7 +48,7 @@ export const LoginModal = () => {
       handle
       onSubmit={async (values, actions) => {
         try {
-          await dispatch(authOperations.logIn(values));
+          await dispatch(logIn(values));
           actions.resetForm();
           navigate('/contacts', { replace: true });
         } catch (error) {
@@ -54,7 +62,7 @@ export const LoginModal = () => {
           as="form"
           mx="auto"
           py={5}
-          w={{ base: '90%' }}
+          w={{ base: '90%', md: 400 }}
           justifyContent="center"
           onSubmit={formik.handleSubmit}
         >
@@ -75,13 +83,20 @@ export const LoginModal = () => {
             <Text color="red"> Wrong email/password combination</Text>
           )}
 
-          <Box as="p" pt={4}>
+          <Stack pt={4}>
+            <Text fontSize="12px">
+              Don't have an account?{' '}
+              <Link color="blue" as={NavLink} to="/signup">
+                Sign Up
+              </Link>
+            </Text>
             <Button disabled={formik.isSubmitting} type="submit">
               Log In
             </Button>
-          </Box>
+          </Stack>
         </VStack>
       )}
     </Formik>
   );
 };
+export default LoginPage;

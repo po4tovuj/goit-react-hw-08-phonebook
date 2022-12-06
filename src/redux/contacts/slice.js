@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import { fetchAll, addContact, deleteContact } from './operations';
 import sortBy from 'lodash.sortby';
 const contactsInitialState = {
@@ -32,6 +33,7 @@ const contactsSlice = createSlice({
         return state;
       })
       .addCase(addContact.fulfilled, (state, { payload }) => {
+        console.log('payload: ', payload);
         // state.items.push(payload);
         state.items = sortBy([...state.items, payload], 'name');
         return;
@@ -54,43 +56,4 @@ const contactsSlice = createSlice({
   },
 });
 
-// [addContact.fulfilled] {
-
-//   state.isLoading = false;
-//   state.error = null;
-//   debugger;
-//
-//   state.items.push(payload);
-// },
-// [addContact.rejected]: handleRejected,
-// [deleteContact.pending]: handlePending,
-//   [deleteContact.fulfilled](state, { payload }) {
-//     state.isLoading = false;
-//     state.error = null;
-
-//   },
-//   [deleteContact.rejected]: handleRejected,
-// },
-// reducers: {
-//   addContact: {
-//     reducer({ contacts }, { payload }) {
-//       contacts.items.push(payload);
-//     },
-//     prepare({ name, number }) {
-//       return {
-//         payload: {
-//           id: shortid.generate(),
-//           name,
-//           number,
-//         },
-//       };
-//     },
-//   },
-//   deleteContact({ contacts }, { payload }) {
-//     const idx = contacts.items.findIndex(contact => contact.id === payload);
-//     contacts.items.splice(idx, 1);
-//   },
-// },
-
-// export const { addContact, deleteContact } = contactsSlice.actions;
-export const contactReducer = contactsSlice.reducer;
+export const contactsReducer = contactsSlice.reducer;

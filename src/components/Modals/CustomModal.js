@@ -3,10 +3,8 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  // ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
 const CustomModal = ({ handleClose, isOpen, title, children }) => {

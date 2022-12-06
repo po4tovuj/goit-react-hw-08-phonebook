@@ -1,22 +1,30 @@
 // import PropTypes from 'prop-types';
+
+import { useDispatch } from 'react-redux';
+import { useEffect, useRef } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { Box, Button, Text, useBoolean, VStack } from '@chakra-ui/react';
+import {
+  Button,
+  Link,
+  Stack,
+  Text,
+  useBoolean,
+  VStack,
+} from '@chakra-ui/react';
 import TextField from 'components/Common/InputText';
-import { useDispatch, useSelector } from 'react-redux';
-import authOperations from 'redux/auth/auth-operations';
-import { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { register } from 'redux/auth/operations';
 
-export const SignUpModal = ({ callback }) => {
+const SignUpPage = () => {
   const [isSignUpFailed, setSignUpFail] = useBoolean(false);
   const navigate = useNavigate();
   const errorMessageTimeOut = useRef(null);
   const clearErrorMessage = () => {
     clearTimeout(errorMessageTimeOut);
   };
-  const isUser = useSelector(getU);
-  useEffect(() => {}, []);
+  // check is user already loggedIn
+
   useEffect(() => {
     if (isSignUpFailed) {
       errorMessageTimeOut.current = setTimeout(() => {
@@ -28,6 +36,7 @@ export const SignUpModal = ({ callback }) => {
     };
   }, [isSignUpFailed, setSignUpFail]);
   const dispatch = useDispatch();
+
   const validationSchema = yup.object().shape({
     name: yup
       .string()
@@ -42,6 +51,33 @@ export const SignUpModal = ({ callback }) => {
       .string()
       .oneOf([yup.ref('password'), null], 'Passwords must match'),
   });
+  // if (isOpen) {
+  //   return (
+  //     <AlertDialog
+  //       isOpen={isOpen}
+  //       leastDestructiveRef={cancelRef}
+  //       onClose={onClose}
+  //     >
+  //       <AlertDialogOverlay />
+  //       <AlertDialogContent>
+  //         <AlertDialogHeader fontSize="lg" fontWeight="bold">
+  //           Log out from current user {name}
+  //         </AlertDialogHeader>
+
+  //         <AlertDialogBody>Are you sure you want to log out?</AlertDialogBody>
+
+  //         <AlertDialogFooter>
+  //           <Button ref={cancelRef} onClick={cancelOperation}>
+  //             Cancel
+  //           </Button>
+  //           <Button variantColor="red" onClick={handleLogOut} ml={3}>
+  //             Log Out
+  //           </Button>
+  //         </AlertDialogFooter>
+  //       </AlertDialogContent>
+  //     </AlertDialog>
+  //   );
+  // }
 
   return (
     <Formik
@@ -55,13 +91,11 @@ export const SignUpModal = ({ callback }) => {
       handle
       onSubmit={async (values, { resetForm, setSubmitting }) => {
         const { name, email, password } = values;
-
         try {
-          await dispatch(authOperations.register({ name, email, password }));
+          await dispatch(register({ name, email, password }));
           resetForm();
           navigate('/contacts', { replace: true });
         } catch (error) {
-          console.log('error: ', error);
           setSubmitting(false);
           setSignUpFail.on();
         }
@@ -78,7 +112,7 @@ export const SignUpModal = ({ callback }) => {
         >
           <TextField
             name="name"
-            placeholder="enter email"
+            placeholder="name"
             autoComplete="off"
             type="text"
           ></TextField>
@@ -104,13 +138,20 @@ export const SignUpModal = ({ callback }) => {
           {isSignUpFailed && (
             <Text color="red">Registration failed, please try again later</Text>
           )}
-          <Box as="p" pt={4}>
+          <Stack pt={4}>
+            <Text fontSize="12px">
+              Already have an account?{' '}
+              <Link color="blue" as={NavLink} to="/login">
+                Log in
+              </Link>
+            </Text>
             <Button disabled={formik.isSubmitting} type="submit">
-              Sign Up
+              Log In
             </Button>
-          </Box>
+          </Stack>
         </VStack>
       )}
     </Formik>
   );
 };
+export default SignUpPage;

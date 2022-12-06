@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
-import { Formik, Form } from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getContacts } from 'redux/selectors';
-import { addContact } from 'redux/operations';
+import { getContacts } from 'redux/contacts/selectors';
+import { addContact } from 'redux/contacts/operations';
 import { VStack, Button, Box } from '@chakra-ui/react';
 import TextField from 'components/Common/InputText';
 import { Notify } from 'notiflix';
 
-export const ContactForm = ({ onSubmit }) => {
+export const ContactForm = ({ handleClose }) => {
   const validationSchema = yup.object().shape({
     isName: yup.boolean(),
     name: yup
@@ -49,6 +49,7 @@ export const ContactForm = ({ onSubmit }) => {
         try {
           dispatch(addContact(values));
           resetForm();
+          handleClose();
         } catch (error) {
           Notify.failure(`Contact wasn't created! ${error.message || ''}`);
           setSubmitting(false);
@@ -57,7 +58,7 @@ export const ContactForm = ({ onSubmit }) => {
       }}
       validationSchema={validationSchema}
     >
-      {({ isSubmiting, handleSubmit, handleBlur, dirty }) => (
+      {({ isSubmiting, handleSubmit, handleBlur, resetForm, dirty }) => (
         <VStack
           as="form"
           // mx="auto"
@@ -86,6 +87,15 @@ export const ContactForm = ({ onSubmit }) => {
             <Button disabled={!dirty || isSubmiting} type="submit">
               Create Contact
             </Button>
+            <Button
+              type="button"
+              onClick={() => {
+                resetForm();
+                this.handleClose();
+              }}
+            >
+              Cancel
+            </Button>
           </Box>
         </VStack>
       )}
@@ -93,5 +103,5 @@ export const ContactForm = ({ onSubmit }) => {
   );
 };
 ContactForm.propTypes = {
-  onSubmit: PropTypes.func,
+  handleClose: PropTypes.func,
 };
