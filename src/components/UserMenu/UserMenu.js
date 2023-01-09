@@ -10,7 +10,7 @@ export const UserMenu = () => {
     dispatch(logOut());
   };
   return (
-    <HStack>
+    <HStack ml="auto">
       <Text>{user.name}</Text>
       <Button onClick={handleLogOut}>Log Out</Button>
     </HStack>

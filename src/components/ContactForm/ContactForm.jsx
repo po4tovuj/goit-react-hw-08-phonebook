@@ -1,15 +1,20 @@
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { getContacts } from 'redux/contacts/selectors';
-import { addContact } from 'redux/contacts/operations';
 import { VStack, Button, Box } from '@chakra-ui/react';
 import TextField from 'components/Common/InputText';
 import { Notify } from 'notiflix';
 
-export const ContactForm = ({ handleClose }) => {
+export const ContactForm = ({
+  handleClose,
+  handleSubmit,
+  contactName = '',
+  contactNumber = '',
+  isNew = false,
+}) => {
   const validationSchema = yup.object().shape({
     isName: yup.boolean(),
     name: yup
@@ -23,45 +28,51 @@ export const ContactForm = ({ handleClose }) => {
     number: yup
       .string()
       .matches(
-        /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
+        /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
         'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
       )
+      .min(7, 'Fill with a valid number')
+      .max(15, 'Fill with a valid number')
       .required('Phone is required!'),
   });
   const contacts = useSelector(getContacts);
-  const dispatch = useDispatch();
 
   return (
     <Formik
-      initialValues={{ name: '', number: '' }}
-      validateOnBlur={false}
-      validateOnChange={false}
-      onSubmit={(values, { resetForm, setSubmitting }) => {
+      initialValues={{ name: contactName, number: contactNumber }}
+      validateOnBlur={true}
+      validateOnChange={true}
+      onSubmit={(values, { resetForm, setSubmitting, dirty }) => {
         const name = values.name.toLowerCase();
 
-        const isContactExist = contacts.find(contact => {
-          const normalizeContactName = contact.name.toLowerCase();
-          return normalizeContactName === name;
-        });
-        if (isContactExist) {
-          return alert(`Contact '${values.name}' is already in contacts`);
+        if (isNew || (!isNew && !dirty)) {
+          const isContactExist = contacts.find(contact => {
+            const normalizeContactName = contact.name.toLowerCase();
+            return normalizeContactName === name;
+          });
+          if (isContactExist) {
+            return Notify.failure(
+              `Contact '${values.name}' is already in contacts`
+            );
+          }
         }
+
         try {
-          dispatch(addContact(values));
+          handleSubmit(values);
+
           resetForm();
           handleClose();
         } catch (error) {
-          Notify.failure(`Contact wasn't created! ${error.message || ''}`);
+          Notify.failure(`${error.message ?? 'Action was failed'}`);
           setSubmitting(false);
         }
-        // onSubmit(values);
       }}
       validationSchema={validationSchema}
     >
       {({ isSubmiting, handleSubmit, handleBlur, resetForm, dirty }) => (
         <VStack
           as="form"
-          // mx="auto"
+          mx="auto"
           py={5}
           w={{ base: '90%', md: '300px' }}
           justifyContent="center"
@@ -76,7 +87,7 @@ export const ContactForm = ({ handleClose }) => {
             autoComplete="off"
           ></TextField>
           <TextField
-            label="Contact number"
+            label="Phone number"
             name="number"
             type="tel"
             placeholder="Contact number"
@@ -84,14 +95,20 @@ export const ContactForm = ({ handleClose }) => {
             autoComplete="off"
           ></TextField>
           <Box as="p" pt={4}>
-            <Button disabled={!dirty || isSubmiting} type="submit">
-              Create Contact
+            <Button
+              mr={6}
+              w="120px"
+              disabled={!dirty || isSubmiting}
+              type="submit"
+            >
+              {isNew ? 'Create' : 'Edit'}
             </Button>
             <Button
               type="button"
+              w="120px"
               onClick={() => {
                 resetForm();
-                this.handleClose();
+                handleClose();
               }}
             >
               Cancel

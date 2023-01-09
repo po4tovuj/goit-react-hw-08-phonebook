@@ -16,11 +16,11 @@ import { useDispatch } from 'react-redux';
 import { refreshUser } from 'redux/auth/operations';
 import { useAuth } from 'hooks';
 import { Text } from '@chakra-ui/react';
-
+import NotFoundPage from 'pages/NotFoundPage';
+import { Loader } from 'components/Loader/Loader';
 const ContactsPage = lazy(() => import('../../pages/ContactsPage'));
 const LoginPage = lazy(() => import('../../pages/LoginPage/LogInPage'));
 const SignUpPage = lazy(() => import('../../pages/SignUpPage/SignUpPage'));
-const NotFoundPage = lazy(() => import('../../pages/NotFoundPage'));
 export const App = () => {
   const dispatch = useDispatch();
   const { isRefreshing } = useAuth();
@@ -28,7 +28,7 @@ export const App = () => {
     dispatch(refreshUser());
   }, [dispatch]);
   return isRefreshing ? (
-    <Text>Fetching user data...</Text>
+    <Loader />
   ) : (
     <Routes>
       <Route path="/" element={<SharedLayout />}>

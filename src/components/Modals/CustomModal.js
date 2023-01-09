@@ -12,9 +12,11 @@ const CustomModal = ({ handleClose, isOpen, title, children }) => {
     <Modal isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader borderBottom="1px" borderColor="gray.200">
+        <ModalHeader py={2} borderBottom="1px" borderColor="gray.200">
           {title}
-          <ModalCloseButton top="15px" />
+          <ModalCloseButton
+            _hover={{ color: 'red.500', backgroundColor: 'gray.100' }}
+          />
         </ModalHeader>
         <ModalBody>{children}</ModalBody>
       </ModalContent>
