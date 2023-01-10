@@ -10,10 +10,8 @@ import { refreshUser } from 'redux/auth/operations';
 import { useAuth } from 'hooks';
 import NotFoundPage from 'pages/NotFoundPage';
 import { Loader } from 'components/Loader/Loader';
-const ContactsPage = lazy(() =>
-  import('../../pages/ContactsPage/ContactsPage')
-);
-const LoginPage = lazy(() => import('../../pages/LoginPage/LogInPage'));
+const ContactsPage = lazy(() => import('pages/ContactsPage/ContactsPage'));
+const LoginPage = lazy(() => import('pages/LoginPage/LogInPage'));
 const SignUpPage = lazy(() => import('pages/SignUpPage/SignUpPage'));
 export const App = () => {
   const dispatch = useDispatch();
