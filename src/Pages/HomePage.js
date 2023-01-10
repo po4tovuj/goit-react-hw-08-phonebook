@@ -1,11 +1,7 @@
 import { Box, Container, Heading, Link, Text } from '@chakra-ui/react';
 import { useAuth } from 'hooks';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 export const HomePage = () => {
-  const dispatch = useDispatch(); // const isLoading = useSelector(getIsLoading);
-  // const error = useSelector(getContactsError);
   const { isLoggedIn } = useAuth();
   return (
     <Container maxW={'container.xl'} p={'20px'}>

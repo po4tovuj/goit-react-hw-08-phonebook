@@ -7,6 +7,8 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 import React from 'react';
+import PropTypes from 'prop-types';
+
 const CustomModal = ({ handleClose, isOpen, title, children }) => {
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
@@ -22,5 +24,11 @@ const CustomModal = ({ handleClose, isOpen, title, children }) => {
       </ModalContent>
     </Modal>
   );
+};
+CustomModal.propTypes = {
+  handleClose: PropTypes.func,
+  isOpen: PropTypes.func,
+  title: PropTypes.string,
+  children: PropTypes.node,
 };
 export default CustomModal;

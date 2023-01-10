@@ -121,4 +121,8 @@ export const ContactForm = ({
 };
 ContactForm.propTypes = {
   handleClose: PropTypes.func,
+  handleSubmit: PropTypes.func,
+  contactName: PropTypes.string,
+  contactNumber: PropTypes.string,
+  isNew: PropTypes.bool,
 };
