@@ -2,23 +2,17 @@
 import { lazy, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { SharedLayout } from '../SharedLayout/SharedLayout';
-// import { Section } from 'components/Section/Section';
-// import { ContactsList } from 'components/ContactsList/ContactsList';
-// import { ContactForm } from 'components/ContactForm/ContactForm';
-// import { ContactFilter } from 'components/ContactFilter/ContactFilter';
-
-// import { fetchAll } from 'redux/operations';
-// import { getIsLoading, getContactsError } from 'redux/selectors';
 import { HomePage } from 'pages/HomePage';
 import PrivateRoute from 'components/PrivateRoute';
 import RestrictedRoute from 'components/RestrictedRoute';
 import { useDispatch } from 'react-redux';
 import { refreshUser } from 'redux/auth/operations';
 import { useAuth } from 'hooks';
-import { Text } from '@chakra-ui/react';
 import NotFoundPage from 'pages/NotFoundPage';
 import { Loader } from 'components/Loader/Loader';
-const ContactsPage = lazy(() => import('../../pages/ContactsPage'));
+const ContactsPage = lazy(() =>
+  import('../../pages/ContactsPage/ContactsPage')
+);
 const LoginPage = lazy(() => import('../../pages/LoginPage/LogInPage'));
 const SignUpPage = lazy(() => import('../../pages/SignUpPage/SignUpPage'));
 export const App = () => {
