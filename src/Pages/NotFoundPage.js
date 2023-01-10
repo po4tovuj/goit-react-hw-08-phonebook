@@ -3,7 +3,7 @@ import { Loader } from 'components/Loader/Loader';
 import { Suspense } from 'react';
 import { NavLink } from 'react-router-dom';
 
-const NotFoundPage = () => {
+export default function NotFoundPage() {
   return (
     <Suspense fallback={<Loader />}>
       <Box height="100%" width="100%">
@@ -24,5 +24,4 @@ const NotFoundPage = () => {
       </Box>
     </Suspense>
   );
-};
-export default NotFoundPage;
+}
