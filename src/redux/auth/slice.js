@@ -16,16 +16,11 @@ const handleLoggedInSuccess = (state, { payload: { user, token } }) => {
 };
 const isRejectedAction = action => action.type.endsWith('rejected');
 const handlePendingAction = state => (state.isRefreshing = true);
-const isPendingAction = action => action.type.endsWith('pending');
 
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
     ...initialState,
-    // user: { name: null, email: null },
-    // token: null,
-    // isLoggedIn: false,
-    // isRefreshing: false,
   },
   extraReducers: builder => {
     builder
