@@ -1,7 +1,7 @@
 import { Box, Container, Heading, Link, Text } from '@chakra-ui/react';
 import { useAuth } from 'hooks';
 import { NavLink } from 'react-router-dom';
-export const HomePage = () => {
+const HomePage = () => {
   const { isLoggedIn } = useAuth();
   return (
     <Container maxW={'container.xl'} p={'20px'}>
@@ -36,3 +36,4 @@ export const HomePage = () => {
     </Container>
   );
 };
+export default HomePage;
