@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { fetchAll } from 'redux/contacts/operations';
 import { addContact } from 'redux/contacts/operations';
 
-export const ContactsPage = () => {
+const ContactsPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -31,3 +31,4 @@ export const ContactsPage = () => {
     </Container>
   );
 };
+export default ContactsPage;
