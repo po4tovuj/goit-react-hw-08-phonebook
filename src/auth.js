@@ -11,7 +11,6 @@ export const signUp = credentials => {
   return axios.post('/users/signup', credentials);
 };
 export const logIn = credentials => {
-  console.log('credentials: ', credentials);
   return axios.post('/users/login', credentials);
 };
 export const logOut = payload => {

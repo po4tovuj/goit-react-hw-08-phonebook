@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchAll, addContact, deleteContact } from './operations';
+import {
+  fetchAll,
+  addContact,
+  deleteContact,
+  updateContact,
+} from './operations';
 import sortBy from 'lodash.sortby';
 const contactsInitialState = {
   items: [],
@@ -33,8 +38,6 @@ const contactsSlice = createSlice({
         return state;
       })
       .addCase(addContact.fulfilled, (state, { payload }) => {
-        console.log('payload: ', payload);
-        // state.items.push(payload);
         state.items = sortBy([...state.items, payload], 'name');
         return;
       })
@@ -43,6 +46,12 @@ const contactsSlice = createSlice({
           contact => contact.id === payload.id
         );
         state.items.splice(index, 1);
+      })
+      .addCase(updateContact.fulfilled, (state, { payload }) => {
+        const index = state.items.findIndex(
+          contact => contact.id === payload.id
+        );
+        state.items.splice(index, 1, payload);
       })
       .addMatcher(isPendingAction, handlePending)
       .addMatcher(

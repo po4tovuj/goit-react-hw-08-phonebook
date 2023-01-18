@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ContactItem } from 'components/ContactItem/ContactItem';
 import { getFilter, getFilteredContacts } from 'redux/contacts/selectors';
@@ -7,16 +7,21 @@ import PropTypes from 'prop-types';
 import CustomModal from 'components/Modals/CustomModal';
 import { ContactForm } from 'components/ContactForm/ContactForm';
 import { useState } from 'react';
+import { updateContact as editContact } from 'redux/contacts/operations';
 
 export const ContactsList = ({ createNewContact }) => {
   const filter = useSelector(getFilter);
   const filteredContacts = useSelector(getFilteredContacts);
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedContact, setSelectedContact] = useState({
     name: '',
     number: '',
+    id: '',
   });
-  const updateContact = contact => {};
+  const updateContact = contact => {
+    dispatch(editContact({ ...selectedContact, ...contact }));
+  };
   const handleOpenEdit = contact => {
     setSelectedContact(contact);
     onOpen();

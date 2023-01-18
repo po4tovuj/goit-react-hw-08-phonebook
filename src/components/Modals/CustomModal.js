@@ -27,7 +27,7 @@ const CustomModal = ({ handleClose, isOpen, title, children }) => {
 };
 CustomModal.propTypes = {
   handleClose: PropTypes.func,
-  isOpen: PropTypes.func,
+  isOpen: PropTypes.bool,
   title: PropTypes.string,
   children: PropTypes.node,
 };

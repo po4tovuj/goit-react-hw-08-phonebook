@@ -1,10 +1,17 @@
 import axios from './api';
-export const getContacts = () => {
-  return axios.get('/publiccontacts').then(({ data }) => data);
+const getContacts = () => {
+  return axios.get('/contacts').then(({ data }) => data);
 };
-export const addContact = payload => {
+const addContact = payload => {
   return axios.post('/contacts', payload).then(({ data }) => data);
 };
-export const deleteContact = id => {
+const deleteContact = id => {
   return axios.delete(`/contacts/${id}`).then(({ data }) => data);
 };
+const editContact = payload => {
+  const { id, name, number } = payload;
+  return axios
+    .patch(`/contacts/${id}`, { name, number })
+    .then(({ data }) => data);
+};
+export { getContacts, addContact, editContact, deleteContact };
