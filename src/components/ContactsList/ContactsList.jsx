@@ -16,7 +16,7 @@ export const ContactsList = ({ createNewContact }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedContact, setSelectedContact] = useState({
     name: '',
-    number: '',
+    phone: '',
     id: '',
   });
   const updateContact = contact => {
@@ -58,7 +58,7 @@ export const ContactsList = ({ createNewContact }) => {
         <ContactForm
           handleSubmit={updateContact}
           contactName={selectedContact.name}
-          contactNumber={selectedContact.number}
+          contactPhone={selectedContact.phone}
           handleClose={onClose}
         />
       </CustomModal>

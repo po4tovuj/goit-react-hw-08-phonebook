@@ -11,7 +11,7 @@ export const getFilteredContacts = state => {
   const filteredContacts = contacts.filter(
     contact =>
       contact.name.toLowerCase().includes(normalizeFilter) ||
-      contact.number.includes(normalizeFilter)
+      contact.phone.includes(normalizeFilter)
   );
   return filteredContacts.sort((a, b) =>
     a.name.toLowerCase().localeCompare(b.name.toLowerCase())

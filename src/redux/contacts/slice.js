@@ -34,7 +34,8 @@ const contactsSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchAll.fulfilled, (state, { payload }) => {
-        state.items = sortBy(payload, 'name');
+        console.log('payload: ', payload);
+        state.items = sortBy(payload.contacts, 'name');
         return state;
       })
       .addCase(addContact.fulfilled, (state, { payload }) => {

@@ -2,10 +2,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as auth from 'auth';
 import { Notify } from 'notiflix';
 
-export const register = createAsyncThunk('auth/register', async credentials => {
+export const register = createAsyncThunk('auth/signup', async credentials => {
   try {
     const { data } = await auth.signUp(credentials);
-
     auth.token.set(data.token);
 
     return data;

@@ -15,7 +15,8 @@ const ContactsPage = () => {
     dispatch(fetchAll());
   }, [dispatch]);
   const createContact = values => {
-    dispatch(addContact(values));
+    console.log('values: ', values);
+    dispatch(addContact({ ...values, email: 'newemail@gmail.com' }));
   };
   return (
     <Container maxW={'container.xl'} py={4}>

@@ -12,7 +12,7 @@ export const ContactForm = ({
   handleClose,
   handleSubmit,
   contactName = '',
-  contactNumber = '',
+  contactPhone = '',
   isNew = false,
 }) => {
   const validationSchema = yup.object().shape({
@@ -25,7 +25,7 @@ export const ContactForm = ({
       )
       .min(3, 'Too short!')
       .required('Name is required!'),
-    number: yup
+    phone: yup
       .string()
       .matches(
         /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
@@ -39,7 +39,7 @@ export const ContactForm = ({
 
   return (
     <Formik
-      initialValues={{ name: contactName, number: contactNumber }}
+      initialValues={{ name: contactName, phone: contactPhone }}
       validateOnBlur={true}
       validateOnChange={true}
       onSubmit={(values, { resetForm, setSubmitting, dirty }) => {
@@ -88,9 +88,9 @@ export const ContactForm = ({
           ></TextField>
           <TextField
             label="Phone number"
-            name="number"
+            name="phone"
             type="tel"
-            placeholder="Contact number"
+            placeholder="Contact phone"
             onBlur={handleBlur}
             autoComplete="off"
           ></TextField>
@@ -123,6 +123,6 @@ ContactForm.propTypes = {
   handleClose: PropTypes.func,
   handleSubmit: PropTypes.func,
   contactName: PropTypes.string,
-  contactNumber: PropTypes.string,
+  contactPhone: PropTypes.string,
   isNew: PropTypes.bool,
 };

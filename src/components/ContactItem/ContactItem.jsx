@@ -5,12 +5,12 @@ import { Box, Button, ListItem, Spacer, Text } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 export const ContactItem = ({ contact, updateContact }) => {
   const dispatch = useDispatch();
-  const { id, name, number } = contact;
+  const { _id, name, phone } = contact;
 
   const handleDelete = e => {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
-    dispatch(deleteContact(id));
+    dispatch(deleteContact(_id));
   };
   return (
     <ListItem
@@ -27,7 +27,7 @@ export const ContactItem = ({ contact, updateContact }) => {
           {' '}
           {name}
         </Text>{' '}
-        <Text> tel. {number}</Text>
+        <Text> tel. {phone}</Text>
       </Box>
       <Spacer />
       <EditIcon
@@ -52,7 +52,7 @@ ContactItem.propTypes = {
   contact: PropTypes.exact({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
     updateContact: PropTypes.func,
   }),
 };

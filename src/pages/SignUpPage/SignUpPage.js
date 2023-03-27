@@ -51,33 +51,6 @@ const SignUpPage = () => {
       .string()
       .oneOf([yup.ref('password'), null], 'Passwords must match'),
   });
-  // if (isOpen) {
-  //   return (
-  //     <AlertDialog
-  //       isOpen={isOpen}
-  //       leastDestructiveRef={cancelRef}
-  //       onClose={onClose}
-  //     >
-  //       <AlertDialogOverlay />
-  //       <AlertDialogContent>
-  //         <AlertDialogHeader fontSize="lg" fontWeight="bold">
-  //           Log out from current user {name}
-  //         </AlertDialogHeader>
-
-  //         <AlertDialogBody>Are you sure you want to log out?</AlertDialogBody>
-
-  //         <AlertDialogFooter>
-  //           <Button ref={cancelRef} onClick={cancelOperation}>
-  //             Cancel
-  //           </Button>
-  //           <Button variantColor="red" onClick={handleLogOut} ml={3}>
-  //             Log Out
-  //           </Button>
-  //         </AlertDialogFooter>
-  //       </AlertDialogContent>
-  //     </AlertDialog>
-  //   );
-  // }
 
   return (
     <Formik
@@ -91,6 +64,8 @@ const SignUpPage = () => {
       handle
       onSubmit={async (values, { resetForm, setSubmitting }) => {
         const { name, email, password } = values;
+        console.log('register: ', register);
+
         try {
           await dispatch(register({ name, email, password }));
           resetForm();
@@ -146,7 +121,7 @@ const SignUpPage = () => {
               </Link>
             </Text>
             <Button disabled={formik.isSubmitting} type="submit">
-              Log In
+              Sign Up
             </Button>
           </Stack>
         </VStack>

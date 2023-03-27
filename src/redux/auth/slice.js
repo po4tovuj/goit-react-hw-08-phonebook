@@ -15,7 +15,6 @@ const handleLoggedInSuccess = (state, { payload: { user, token } }) => {
   state.isRefreshing = false;
 };
 const isRejectedAction = action => action.type.endsWith('rejected');
-const handlePendingAction = state => (state.isRefreshing = true);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -23,8 +22,9 @@ const authSlice = createSlice({
     ...initialState,
   },
   extraReducers: builder => {
+    console.log('builder: ', builder);
     builder
-      .addCase(register.pending, handlePendingAction)
+      // .addCase(register.pending, handlePendingAction)
       .addCase(register.fulfilled, handleLoggedInSuccess)
       .addCase(logIn.fulfilled, handleLoggedInSuccess)
       .addCase(logOut.fulfilled, state => {
